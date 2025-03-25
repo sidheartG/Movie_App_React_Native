@@ -32,22 +32,22 @@ const _layout = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarItemStyle: {
-            width: "100%",
-            height: "100%",
-            justifyContent: "center",
-            alignItems: "center"
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
         },
         tabBarStyle: {
-            backgroundColor: "#0f0D23",
-            borderRadius: 50,
-            marginHorizontal: 20,
-            marginBottom: 36,
-            height: 52,
-            position: "absolute",
-            overflow: "hidden",
-            borderWidth: 1,
-            borderColor: "#0f0D23"
-        }
+          backgroundColor: "#0f0D23",
+          borderRadius: 50,
+          marginHorizontal: 20,
+          marginBottom: 36,
+          height: 52,
+          position: "absolute",
+          overflow: "hidden",
+          borderWidth: 1,
+          borderColor: "#0f0D23",
+        },
       }}
     >
       <Tabs.Screen
@@ -75,6 +75,18 @@ const _layout = () => {
         }}
       />
       <Tabs.Screen
+        name="series"
+        options={{
+          title: "Series",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <>
+              <TabIcon focused={focused} icon={icons.series} title="Series" />
+            </>
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="saved"
         options={{
           title: "Saved",
@@ -86,6 +98,7 @@ const _layout = () => {
           ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
