@@ -46,15 +46,17 @@ const Carousal = ({ images, links }: Props) => {
           >
             {images.map((image, imageIndex) => {
               return (
-                <TouchableOpacity onPress={() => Linking.openURL(links[imageIndex])}
-                  style={{ width: windowWidth, height: 250 }}
+                <TouchableOpacity onPress={() => 
+                  Linking.openURL(`https://www.youtube.com/watch?v=${links[imageIndex]}`)
+                }
+                  style={{ width: windowWidth, height: 200, marginTop:15 }}
                   key={imageIndex}
                 >
                   <ImageBackground source={{ uri: image }} style={styles.card}>
                     <View 
                     // className="flex-1 w-full justify-center items-center bg-black bg-opacity-25"
                     >
-                      <Image  source={icons.play}/>
+                      <Image style={styles.image}  source={icons.play}/>
                     </View>
                   </ImageBackground>
                 </TouchableOpacity>
@@ -93,18 +95,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   scrollContainer: {
-    height: 300,
+    height: 220,
     alignItems: "center",
     justifyContent: "center",
   },
   card: {
     flex: 1,
     marginVertical: 4,
-    marginHorizontal: 16,
+    marginHorizontal: 10,
     borderRadius: 5,
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    width: 75, // Set a smaller width
+    height: 75, // Set a smaller height
+    alignSelf: "center", // Ensures it stays centered
   },
   textContainer: {
     backgroundColor: "rgba(0,0,0, 0.7)",

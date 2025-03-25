@@ -1,4 +1,11 @@
-import { View, Text, Image, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { images } from "@/constants/images";
 import MovieCard from "@/components/MovieCard";
@@ -10,7 +17,7 @@ import SearchBar from "@/components/SearchBar";
 
 const search = () => {
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const {
     data: movies,
     loading,
@@ -37,6 +44,22 @@ const search = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
+  const onRefresh = async () => {
+    if (searchQuery.trim()) {
+      await loadMovies();
+    } else {
+      reset();
+    }
+  };
+
+  useEffect(() => {
+    if (loading) {
+      setRefreshing(true);
+    } else {
+      setRefreshing(false);
+    }
+  }, [loading]);
+
   return (
     <View className="flex-1 bg-primary">
       <Image
@@ -46,6 +69,9 @@ const search = () => {
       />
 
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         data={movies}
         renderItem={({ item }) => <MovieCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
@@ -69,13 +95,15 @@ const search = () => {
                 onChangeText={(text: string) => setSearchQuery(text)}
               />
             </View>
-            {loading && (
+            {/* {
+            loading && (
               <ActivityIndicator
                 size="large"
                 color="#0000ff"
                 className="my-3"
               />
-            )}
+            )
+            } */}
             {error && (
               <Text className="text-red-500 px-5 my-3">
                 Error: {error.message}

@@ -7,6 +7,24 @@ export const TMDB_CONFIG = {
   },
 };
 
+export const fetchAllTrending = async () => {
+  const endpoint = `${TMDB_CONFIG.BASE_URL}/trending/all/day?language=en-US`;
+
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: TMDB_CONFIG.headers,
+  });
+
+  if (!response.ok) {
+    // @ts-ignore
+    throw new Error("Failed to fetch movies", response.statusText);
+  }
+
+  const data = await response.json();
+
+  return data.results;
+};
+
 export const fetchMovies = async ({ query }: { query: string }) => {
   const endpoint = query
     ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
@@ -126,7 +144,7 @@ export const fetchUpcomingMovies = async () => {
 };
 
 export const fetchRecommendedMovies = async (movieId: string) => {
-  const endpoint = `${TMDB_CONFIG.BASE_URL}/movie/${movieId}/recommendations`;
+  const endpoint = `${TMDB_CONFIG.BASE_URL}/movie/${movieId}/recommendations?sort_by=popularity.desc`;
 
   const response = await fetch(endpoint, {
     method: "GET",
@@ -141,8 +159,25 @@ export const fetchRecommendedMovies = async (movieId: string) => {
   const data = await response.json();
 
   return data.results;
-}
+};
 
+export const fetchSimilarMovies = async (movieId: string) => {
+  const endpoint = `${TMDB_CONFIG.BASE_URL}/movie/${movieId}/similar?sort_by=popularity.desc`;
+
+  const response = await fetch(endpoint, {
+    method: "GET",
+    headers: TMDB_CONFIG.headers,
+  });
+
+  if (!response.ok) {
+    // @ts-ignore
+    throw new Error("Failed to fetch movies", response.statusText);
+  }
+
+  const data = await response.json();
+
+  return data.results;
+};
 
 export const fetchMovieVideos = async (
   movieId: string
@@ -150,6 +185,32 @@ export const fetchMovieVideos = async (
   try {
     const response = await fetch(
       `${TMDB_CONFIG.BASE_URL}/movie/${movieId}/videos`,
+      {
+        method: "GET",
+        headers: TMDB_CONFIG.headers,
+      }
+    );
+
+    if (!response.ok) {
+      // @ts-ignore
+      throw new Error("Failed to fetch movie videos", response.statusText);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchMovieCredits = async (
+  movieId: string
+): Promise<MovieCreditsdata> => {
+  try {
+    const response = await fetch(
+      `${TMDB_CONFIG.BASE_URL}/movie/${movieId}/credits`,
       {
         method: "GET",
         headers: TMDB_CONFIG.headers,
