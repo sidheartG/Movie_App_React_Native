@@ -11,7 +11,7 @@ import { images } from "@/constants/images";
 import MovieCard from "@/components/MovieCard";
 import { useRouter } from "expo-router";
 import useFetch from "@/services/useFetch";
-import { fetchMovies } from "@/services/api";
+import { fetchMovies, searchAll } from "@/services/api";
 import { icons } from "@/constants/icons";
 import SearchBar from "@/components/SearchBar";
 
@@ -26,7 +26,7 @@ const search = () => {
     reset,
   } = useFetch(
     () =>
-      fetchMovies({
+      searchAll({
         query: searchQuery,
       }),
     false
@@ -72,10 +72,15 @@ const search = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        data={movies}
+        data={
+          movies &&
+          movies.filter(
+            (item) => item.media_type === "movie" || item.media_type === "tv"
+          )
+        }
         renderItem={({ item }) => <MovieCard {...item} />}
         keyExtractor={(item) => item.id.toString()}
-        className="px-5"
+        className="px-3"
         numColumns={3}
         columnWrapperStyle={{
           justifyContent: "center",
@@ -110,12 +115,16 @@ const search = () => {
               </Text>
             )}
 
-            {!loading && !error && searchQuery.trim() && movies?.length > 0 && (
-              <Text className="text-xl text-white font-bold">
-                Search Results For{" "}
-                <Text className="text-accent">{searchQuery}</Text>
-              </Text>
-            )}
+            {!loading &&
+              !error &&
+              searchQuery.trim() &&
+              movies &&
+              movies?.length > 0 && (
+                <Text className="text-xl text-white font-bold">
+                  Search Results For{" "}
+                  <Text className="text-accent">{searchQuery}</Text>
+                </Text>
+              )}
           </>
         }
         ListEmptyComponent={

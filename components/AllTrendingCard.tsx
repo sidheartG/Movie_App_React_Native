@@ -34,10 +34,9 @@ const AllTrendingCard = ({
         <View className="flex-row items-center justify-start gap-x-1">
           <Image source={icons.star} className="size-4" />
           <Text className="text-xs text-white font-bold uppercase">
-            {Math.round(vote_average / 2)}
+            {vote_average.toFixed(1)}
           </Text>
         </View>
-
         <View className="flex-row items-center justify-between">
           <Text className="text-xs text-light-300 font-medium mt-1">
             {release_date?.split("-")[0] || first_air_date?.split("-")[0]}
@@ -46,6 +45,7 @@ const AllTrendingCard = ({
             {media_type}
           </Text>
         </View>
+
       </TouchableOpacity>
     </Link>
   );

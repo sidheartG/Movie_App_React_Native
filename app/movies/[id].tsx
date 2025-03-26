@@ -189,10 +189,11 @@ const MovieDetails = () => {
                 }
               />
             </View>
+            
             {otherVideos && otherVideos.length > 0 && (
               <View className="mx-3">
                 <Text className="text-lg text-white font-bold mt-5 mb-3">
-                  Top Billed Cast
+                  Behind the scenes & More
                 </Text>
 
                 <FlatList

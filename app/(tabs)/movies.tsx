@@ -16,7 +16,7 @@ import {
   fetchNowPlayingMovies,
   fetchTopRatedMovies,
   fetchUpcomingMovies,
-  getTrendingMovies,
+  fetchTrendingMovies,
 } from "@/services/api";
 import MovieCard from "@/components/MovieCard";
 import TrendingCard from "@/components/TrendingCard";
@@ -32,7 +32,7 @@ export default function Movies() {
     error: trendingMoviesError,
     refetch: loadTrendingMovies,
     reset: resetTrendingMovies,
-  } = useFetch(getTrendingMovies);
+  } = useFetch(fetchTrendingMovies);
 
   const {
     data: nowPlayingMovies,
@@ -137,14 +137,8 @@ export default function Movies() {
             </Text>
           ) : (
             <View className="flex-1 mt-5">
-              <SearchBar
-                onPress={() => {
-                  router.push("/search");
-                }}
-                placeholder="Search..."
-              />
               {trendingMovies && (
-                <View className="mt-10">
+                <>
                   <Text className="text-lg text-white font-bold mb-3">
                     Trending Movies
                   </Text>
@@ -152,14 +146,14 @@ export default function Movies() {
                   <FlatList
                     data={trendingMovies.slice(0, 8)}
                     horizontal
-                    ItemSeparatorComponent={() => <View className="w-6" />}
+                    ItemSeparatorComponent={() => <View className="w-4" />}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item, index }) => (
                       <TrendingCard movie={item} index={index} />
                     )}
                     keyExtractor={(item) => item.id.toString()}
                   />
-                </View>
+                </>
               )}
               <>
                 <Text className="text-lg text-white font-bold mt-5 mb-3">
